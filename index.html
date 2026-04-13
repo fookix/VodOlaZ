@@ -531,7 +531,7 @@
         <section class="hero">
             <div class="hero-main">
                 <h2>Напиши одно предложение.</h2>
-                <p>Для TikTok и Shorts соберём теги. Для YouTube — ещё заголовок и описание.</p>
+                <p id="heroSub">Для TikTok и Shorts соберём теги. Для YouTube — ещё заголовок и описание.</p>
             </div>
         </section>
 
@@ -553,11 +553,11 @@
                     <button class="preset" data-preset="viral" type="button">Охват</button>
                     <button class="preset" data-preset="seo" type="button">SEO-банк</button>
                 </div>
-                <div class="toolbar-hint">Короткий и ясный ввод работает лучше всего.</div>
+                <div class="toolbar-hint" id="modeHint">Короткий и ясный ввод работает лучше всего.</div>
             </div>
 
             <div class="action-row">
-                <button class="go" id="generateBtn" type="button">ПОЕХАЛИ</button>
+                <button class="go" id="generateBtn" type="button">СОБРАТЬ РЕЗУЛЬТАТ</button>
 
                 <section class="promo">
                     <div>
@@ -597,7 +597,7 @@
                 </div>
             </div>
 
-            <details>
+            <details id="advancedDetails">
                 <summary>Для продвинутых</summary>
                 <div class="advanced-grid">
                     <div>
@@ -814,6 +814,29 @@
         return state.platform === "tt" || state.platform === "sh";
     }
 
+    function updateModeUi() {
+        const tagsOnly = isTagsOnlyPlatform();
+        const modeText = tagsOnly
+            ? "Для этой платформы соберём только теги."
+            : "Для этой платформы соберём заголовок, описание и теги.";
+        const buttonText = tagsOnly ? "СОБРАТЬ ТЕГИ" : "СОБРАТЬ ЗАГОТОВКУ";
+        const placeholder = tagsOnly
+            ? "Например: сравниваю две мышки для шутеров и говорю, какая удобнее"
+            : "Например: честно разбираю новую Ладу и объясняю, что в ней реально хорошо, а что нет";
+
+        $("#heroSub").textContent = modeText;
+        $("#modeHint").textContent = tagsOnly
+            ? "Короткий и ясный ввод даст более чистую пачку тегов."
+            : "Короткий и ясный ввод даст более точные заголовок, описание и теги.";
+        $("#generateBtn").textContent = buttonText;
+        $("#topic").placeholder = placeholder;
+        $("#titleBox").style.display = tagsOnly ? "none" : "block";
+        $("#descBox").style.display = tagsOnly ? "none" : "block";
+        $("#searchSection").style.display = tagsOnly ? "none" : "block";
+        $("#altTitlesSection").style.display = tagsOnly ? "none" : "block";
+        $("#advancedDetails").style.display = tagsOnly ? "none" : "block";
+    }
+
     function buildSearchIdeas(topic, niche) {
         return [
             cfg[state.platform].name + ": " + topic,
@@ -901,11 +924,7 @@
         $("#csvOut").textContent = state.last.csv;
         $("#searchOut").textContent = state.last.search;
         $("#altTitlesOut").textContent = [state.last.title, ...state.last.altTitles].join("\n");
-        const tagsOnly = isTagsOnlyPlatform();
-        $("#titleBox").style.display = tagsOnly ? "none" : "block";
-        $("#descBox").style.display = tagsOnly ? "none" : "block";
-        $("#searchSection").style.display = tagsOnly ? "none" : "block";
-        $("#altTitlesSection").style.display = tagsOnly ? "none" : "block";
+        updateModeUi();
         $("#result").style.display = "grid";
 
         setStatus("Сделано. Режим: " + preset.label + ". " + preset.hint, false);
@@ -914,6 +933,7 @@
 
     loadState();
     applyPreset(state.preset);
+    updateModeUi();
 
     $$("#platformTabs .tab").forEach((tab) => {
         tab.classList.toggle("active", tab.dataset.platform === state.platform);
@@ -921,6 +941,7 @@
             $$("#platformTabs .tab").forEach((item) => item.classList.remove("active"));
             tab.classList.add("active");
             state.platform = tab.dataset.platform;
+            updateModeUi();
             saveState();
         });
     });
