@@ -226,46 +226,26 @@
             pointer-events: none;
         }
 
-        .hero-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
-            padding: 8px 13px;
-            border-radius: 999px;
-            background: rgba(8, 15, 20, 0.42);
-            border: 1px solid rgba(99, 216, 221, 0.16);
-            color: var(--teal);
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .hero-pill::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--bronze-bright);
-        }
-
         .hero-main h2 {
             margin: 0 0 10px;
-            max-width: 9.4ch;
+            max-width: 10ch;
             font-size: clamp(34px, 5vw, 64px);
             line-height: 0.95;
             letter-spacing: -0.07em;
             font-weight: 900;
             text-wrap: balance;
+            text-align: center;
+            margin-inline: auto;
         }
 
         .hero-main p {
             margin: 0;
-            max-width: 32ch;
+            max-width: 36ch;
             color: #aac0c7;
             line-height: 1.6;
             font-size: 15px;
+            text-align: center;
+            margin-inline: auto;
         }
 
         .controls {
@@ -550,7 +530,6 @@
 
         <section class="hero">
             <div class="hero-main">
-                <div class="hero-pill">Быстрый режим</div>
                 <h2>Напиши одно предложение.</h2>
                 <p>Для TikTok и Shorts соберём теги. Для YouTube — ещё заголовок и описание.</p>
             </div>
